@@ -9,17 +9,17 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 	"text/template"
 	"unicode/utf8"
-
-	"github.com/Masterminds/sprig"
-	"github.com/ryanuber/go-glob"
 
 	"github.com/Ilyes512/boilr/pkg/boilr"
 	"github.com/Ilyes512/boilr/pkg/prompt"
 	"github.com/Ilyes512/boilr/pkg/util/osutil"
 	"github.com/Ilyes512/boilr/pkg/util/stringutil"
 	"github.com/Ilyes512/boilr/pkg/util/tlog"
+	"github.com/Masterminds/sprig"
+	"github.com/ryanuber/go-glob"
 )
 
 // Interface is contains the behavior of boilr templates.
@@ -170,6 +170,14 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 		}
 
 		newName := buf.String()
+
+		splitPath := strings.Split(newName, string(filepath.Separator))
+		for _, s := range splitPath {
+			if strings.TrimSpace(s) == "" {
+				tlog.Debug(fmt.Sprintf("skip creating a file or directory with an empty name %q -> %q", oldName, newName))
+				return nil
+			}
+		}
 
 		target := filepath.Join(dirPrefix, newName)
 
