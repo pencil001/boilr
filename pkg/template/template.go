@@ -1,7 +1,6 @@
 package template
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -11,7 +10,6 @@ import (
 	"regexp"
 	"strings"
 	"text/template"
-	"unicode/utf8"
 
 	"github.com/Ilyes512/boilr/pkg/boilr"
 	"github.com/Ilyes512/boilr/pkg/prompt"
@@ -258,16 +256,6 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 
 		return nil
 	})
-}
-
-func isBinary(r io.Reader) (bool, error) {
-	buf := make([]byte, 1024)
-	n, err := r.Read(buf)
-	if err != nil && err != io.EOF {
-		return false, err
-	}
-
-	return !utf8.Valid(buf[:n]) || bytes.ContainsAny(buf[:n], "\x00"), nil
 }
 
 func ignoreCopyFile(filename string) bool {
