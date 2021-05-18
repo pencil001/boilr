@@ -158,6 +158,7 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 		// TODO translate errors into meaningful ones
 		fnameTmpl := template.Must(template.
 			New("file name template").
+			Delims("[[", "]]").
 			Option(Options...).
 			Funcs(sprig.TxtFuncMap()).
 			Funcs(FuncMap).
@@ -238,6 +239,7 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 
 			contentsTmpl := template.Must(template.
 				New("file contents template").
+				Delims("[[", "]]").
 				Option(Options...).
 				Funcs(sprig.TxtFuncMap()).
 				Funcs(FuncMap).
